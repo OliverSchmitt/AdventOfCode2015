@@ -5,13 +5,16 @@ import util
 VOWELS = "aeiou"
 PROHIBITED = ["ab", "cd", "pq", "xy"]
 
-def partOne():
+def countAndPrintStrings(condition):
     lines = util.getLines()
-    numberOfNiceStrings = 0
+    count = 0
     for line in lines:
-        if isNice(line):
-            numberOfNiceStrings += 1
-    print("Number of nice strings: {}".format(numberOfNiceStrings))
+        if condition(line):
+            count += 1
+    print("Number of nice strings: {}".format(count))
+
+def partOne():
+    countAndPrintStrings(isNice)
 
 def isNice(string):
     return ((countVowels(string) > 2)
@@ -39,12 +42,7 @@ def containsProhibited(string):
     return False
 
 def partTwo():
-    lines = util.getLines()
-    count = 0
-    for line in lines:
-        if isNice2(line):
-            count += 1
-    print("Number of nice strings: {}".format(count))
+    countAndPrintStrings(isNice2)
 
 def isNice2(string):
     return containsNonOverlappingPair(string) and containsOneSpaceRepeat(string)
