@@ -28,8 +28,6 @@ echo "Creating day$n directory..."
 mkdir day$n
 
 # Create empty files
-echo "Creating __init__.py..."
-touch day$n/__init__.py
 echo "Creating input.txt..."
 touch day$n/input.txt
 
