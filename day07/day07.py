@@ -13,9 +13,12 @@ LSHIFT = "LSHIFT"
 class Wire:
     def __init__(self, name, source):
         self.name = name
-        self.value = 0
+        self.value = None
         # Number, Wire or Gate
         self.source = source
+
+    def __repr__(self):
+        return "{}: {}".format(self.name, self.value)
 
 class Gate:
     def __init__(self, op, left, right):
@@ -59,7 +62,7 @@ def getStrValue(source, tree):
     if source.isdigit():
         return int(source)
     else:
-        if tree[source].value == 0:
+        if tree[source].value == None:
             tree[source].value = getValue(tree[source].source, tree)
         return tree[source].value
 
@@ -81,18 +84,25 @@ def getGateValue(source, tree):
                 exit(1)
             return func(getValue(source.left, tree), getValue(source.right, tree))
 
-def partOne():
-    lines = util.getLines()
-    tree = parseLines(lines)
-    name = "a"
-    print("{}: {}".format(name, getValue(name, tree) % (2**16)))
-
-def partTwo():
-    pass
+def resetTree(tree):
+    for wire in tree.values():
+        wire.value = None
 
 def main():
-    partOne()
-    partTwo()
+    lines = util.getLines()
+    tree = parseLines(lines)
+
+    # Part One
+    name = "a"
+    value = getValue(name, tree) % (2**16)
+    print("{}: {}".format(name, value))
+
+    # Part Two
+    resetTree(tree)
+    tree["b"].value = value
+
+    newValue = getValue(name, tree) % (2**16)
+    print("{}: {}".format(name, newValue))
 
 if __name__ == "__main__":
     main()
