@@ -20,7 +20,7 @@ class Wire:
 class Gate:
     def __init__(self, op, left, right):
         self.op = op
-        # Nmber or Gate
+        # Nmber or Wire name
         self.left = left
         self.right = right
     
@@ -31,22 +31,20 @@ def parseLines(lines):
     tree = {}
     for line in lines:
         name = line.split()[-1]
-        wire = Wire(name, getSource(tree, line))
-        tree[name] = wire
+        tree[name] = Wire(name, getSource(tree, line))
     return tree
 
 
 def getSource(tree, line):
-    name = line.split()[-1]
-    if name in tree:
-        return tree[name]
-    
     words = line.split()[:-2]
     n = len(words)
+    # Number or Wire name
     if n == 1:
         return words[0]
+    # NOT Gate
     elif n == 2:
         return Gate(words[0], words[1], None)
+    # Binary Gates
     elif n == 3:
         return Gate(words[1], words[0], words[2])
 
@@ -85,9 +83,9 @@ def getGateValue(source, tree):
 
 def partOne():
     lines = util.getLines()
-    op = parseLines(lines)
+    tree = parseLines(lines)
     name = "a"
-    print("{}: {}".format(name, getValue(name, op) % (2**16)))
+    print("{}: {}".format(name, getValue(name, tree) % (2**16)))
 
 def partTwo():
     pass
